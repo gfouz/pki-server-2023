@@ -3,9 +3,11 @@ var path = require('path');
 import db from "./models";
 import indexRoutes from "./routes/routes";
 import cors from "cors";
+import helmet from "helmet";
 import { generateSeeders } from "./tools/GenerateSeeders";
 
 const app = express();
+app.use(helmet());
 const port = process.env.PORT;
 
 //Routes

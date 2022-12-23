@@ -19,7 +19,7 @@ export const funcionalidades = [
     rolId: 1,
   },
   {
-    name: "Admin estados",
+    name: "Administrar estados",
     path: "/estados",
     enabled: true,
     rolId: 1,

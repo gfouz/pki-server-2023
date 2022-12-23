@@ -1,6 +1,5 @@
 export const funcionariosRegistro = [
   {
-
     name: "Giovani Fouz Jiménez",
     phone: 54278815,
     enabled: true,

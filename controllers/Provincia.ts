@@ -75,8 +75,8 @@ export const createProvincia = async (
     const name: string = req.body.name;
     await db.Provincias.create({ name: name.trim(), enabled: true });
     return res.status(200).json({ message: "created" });
-  } catch (ex) {
-    next(ex);
+  } catch (error) {
+    console.log(error);
   }
 };
 

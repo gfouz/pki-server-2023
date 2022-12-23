@@ -29,17 +29,15 @@ module.exports = (sequelize: any, DataTypes: any) => {
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
-        unique: true,
       },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+    
       },
       password: {
         type: DataTypes.STRING,

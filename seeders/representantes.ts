@@ -12,7 +12,7 @@ export const representantes = [
   userId: 1
 },
 {
-  ci: 75062418781,
+  ci: 75062415875,
   tome: 3333,
   folio: 4444,
   name: "Sania Leticia",

@@ -2,9 +2,21 @@ import { NextFunction, Request, Response } from "express";
 import db from "../models";
 import { Op } from "sequelize";
 import { QueryResult } from "pg";
-import brcypt from "bcrypt";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { TOKEN_SECRET } from "../privateToken";
+
+let count: number = 0;
+const counter = ()=>  {
+  count = count + 1;
+  if(count >= 5){ 
+  const timer = setTimeout(()=>{
+    count = 0;
+  }, 10000);
+  if( count === 0 ) { return () => clearTimeout(timer); }
+ }
+}
+
 
 export const getUsers = async (req: Request, res: Response, next: any) => {
   try {
@@ -85,7 +97,7 @@ export const createUser = async (req: Request, res: Response, next: any) => {
   try {
     const name: string = req.body.name;
     const email: string = req.body.email;
-    const hashedPassword = await brcypt.hash(req.body.password, 10);
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const rolId: number = parseInt(req.body.rolId);
     await db.Users.create({
       name: name,
@@ -107,7 +119,7 @@ export const updateUser = async (req: Request, res: Response, next: any) => {
     const email: string = req.body.email;
     const enabled: boolean = req.body.enabled;
     const rolId: number = parseInt(req.body.rolId);
-    const hashedPassword = await brcypt.hash(req.body.password, 10);
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const response: QueryResult = await db.Users.update(
       {
         name: name,
@@ -128,29 +140,60 @@ export const updateUser = async (req: Request, res: Response, next: any) => {
   }
 };
 
-export const loginUser = async (req: Request, res: Response, next: any) => {
-  try {
+
+
+
+
+
+export const loginUser = async (req: Request, res: Response) => {
+
+    try {
+    
+    if(count){console.log(`this is count: ${count}`)};
     const email: string = req.body.email;
     const password: string = req.body.password;
+
     let user = await db.Users.findOne({
       where: {
-        email: email,
+        email: email
       },
     });
-    
-    // delete user.dataValues.password; this is a trouble.
-
-    const token = jwt.sign(
-      {
-        email: user.email,
-      },
-      TOKEN_SECRET,
-      {
-        expiresIn: "1h",
+    const isPassword = await bcrypt.compare(password, user.password);
+    if ( email !== user.email){ return res.status(204).json({ message: "datos-incorrectos" });}
+    if ( email === undefined || email === null){ 
+        return res.status(204).json({ message: "Faltan datos!" });
       }
-    );
-    return res.status(202).json({ signature: token, message: "accepted" });
-  } catch (ex) {
-    next(ex);
+    if(!isPassword){
+      counter();
+    }  
+    
+    if(!isPassword && count < 5 ){ 
+    
+        return res.status(206).json({ message: "datos-incorrectos" });
+      }
+    if(!isPassword && count >= 5 ) {
+         
+         return res.status(200).json({message: "intente-más-tarde"});
+      }   
+
+     if (
+      user &&
+      (await bcrypt.compare(password, user.password)) &&
+      user.enabled
+    ) {
+      const token = jwt.sign(
+        {
+          email: user.email,
+        },
+            TOKEN_SECRET,
+        {
+          expiresIn: "1h",
+        }
+      );
+
+    return res.status(202).json({ signature: token, message: "autorizado", user });
+  }
+  } catch (error) {
+        return res.status(400).json({ message: error });
   }
 };
