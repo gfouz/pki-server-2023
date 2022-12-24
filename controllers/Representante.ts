@@ -100,7 +100,7 @@ export const createRepresentante = async (
     const namerCharge: string = req.body.namerCharge;
     const eiId: number = parseInt(req.body.eiId);
     const userId: string = req.body.userId;
-    deleteFile();
+    //deleteFile();
     await db.Representantes.create({
       ci: ci,
       tome: tome,
@@ -136,7 +136,7 @@ export const updateRepresentante = async (
     const enabled = req.body.enabled;
     const eiId: number = parseInt(req.body.eiId);
     const userId: string = req.body.userId;
-    deleteFile();
+    //deleteFile();
     await db.Representantes.update(
       {
         ci: ci,
