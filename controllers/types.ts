@@ -46,3 +46,25 @@ export interface IEReg {
   enabled: boolean;
   municipioId: number;
 }
+
+export interface IEmpInst {
+  id: number;
+  name: string;
+  enabled: boolean;
+  organismoId: number;
+  municipioId: number;
+}
+
+export interface IRepresentante {
+  id: number;
+  ci: number;
+  tome: number;
+  folio: number;
+  name: string;
+  phone: string;
+  namer: string;
+  namerCharge: string;
+  enabled: boolean;
+  eiId: number;
+  userId: number;
+}

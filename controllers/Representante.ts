@@ -4,6 +4,7 @@ import { Op } from "sequelize";
 import { QueryResult } from "pg";
 import fs from "fs";
 import multer from "multer";
+import { IEmpInst, IRepresentante, IUser } from "./types";
 
 export const getRepresentantes = async (
   req: Request,
@@ -11,7 +12,15 @@ export const getRepresentantes = async (
   next: NextFunction
 ) => {
   try {
-    const result: QueryResult = await db.Representantes.findAll();
+    const representantes: IRepresentante[] = await db.Representantes.findAll({ raw: true });
+    const users: IUser[] = await db.Users.findAll({ raw: true });
+    const empInsts: IEmpInst[] = await db.EmpresasInstituciones.findAll({ raw: true });
+    const result = representantes?.map( (rep: { userId: number; eiId: number }) => {
+          const user = users.find( user => user?.id === rep?.userId );
+          const empInst = empInsts.find( emp => emp?.id === rep?.eiId);
+          return { ...rep, email: user?.email, inst: empInst?.name };
+      }
+    );
     return res.status(200).json({ result, message: "all-items" });
   } catch (ex) {
     next(ex);
@@ -42,11 +51,21 @@ export const getRepresentantesEnabled = async (
   next: NextFunction
 ) => {
   try {
-    const result: QueryResult = await db.Representantes.findAll({
+    const representantes: IRepresentante[] = await db.Representantes.findAll({
+      raw: true,
       where: {
         enabled: req.params.enabled,
       },
     });
+    const users: IUser[] = await db.Users.findAll({ raw: true });
+    const empInsts: IEmpInst[] = await db.EmpresasInstituciones.findAll({ raw: true });
+    const result = representantes?.map( (rep: { userId: number; eiId: number }) => {
+          const user = users.find( user => user?.id === rep?.userId );
+          const empInst = empInsts.find( emp => emp?.id === rep?.eiId);
+          return { ...rep, email: user?.email, inst: empInst?.name };
+      }
+    );
+  
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);
