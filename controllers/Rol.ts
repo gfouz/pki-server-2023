@@ -2,10 +2,24 @@ import { NextFunction, Request, Response } from "express";
 import db from "../models";
 import { Op } from "sequelize";
 import { QueryResult } from "pg";
+import { IFn, IRol } from "./types";
 
 export const getRols = async (req: Request, res: Response, next: any) => {
   try {
-    const result: QueryResult = await db.Rols.findAll();
+    const rols: IRol[] = await db.Rols.findAll({ raw: true });
+    const functionalities: IFn[] = await db.Funcionalidades.findAll({
+      raw: true,
+    });
+    const result = rols?.map((rol: { id: number }) => {
+      let fns: IFn[] = functionalities?.filter(
+        (fn: { rolId: number }) => fn?.rolId === rol?.id
+      );
+      if (rols) {
+        return { ...rol, funct: [...fns] };
+      } else {
+        return { ...rol };
+      }
+    });
     return res.status(200).json({ result, message: "all-items" });
   } catch (ex) {
     next(ex);
@@ -19,10 +33,24 @@ export const getRolsEnabled = async (
 ) => {
   try {
     const enabled = req.params.enabled;
-    const result: QueryResult = await db.Rols.findAll({
+    const rols: IRol[] = await db.Rols.findAll({
+      raw: true,
       where: {
         enabled: enabled,
       },
+    });
+    const functionalities: IFn[] = await db.Funcionalidades.findAll({
+      raw: true,
+    });
+    const result = rols?.map((rol: { id: number }) => {
+      let fns = functionalities?.filter(
+        (fn: { rolId: number }) => fn?.rolId === rol?.id
+      );
+      if (rols) {
+        return { ...rol, funct: [...fns] };
+      } else {
+        return { ...rol };
+      }
     });
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {

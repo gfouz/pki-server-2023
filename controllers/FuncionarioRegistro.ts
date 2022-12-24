@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import db from "../models";
 import { Op } from "sequelize";
 import { QueryResult } from "pg";
+import { IFReg, IUser, IEReg } from './types';
+
 
 export const getFuncionariosRegistro = async (
   req: Request,
@@ -40,10 +42,22 @@ export const getFuncionariosRegistroEnabled = async (
   next: NextFunction
 ) => {
   try {
-    const result: QueryResult = await db.FuncionariosRegistro.findAll({
+    const fReg: IFReg[] = await db.FuncionariosRegistro.findAll({
+      raw: true,
       where: {
         enabled: req.params.enabled,
       },
+    });
+    const users: IUser[] = await db.Users.findAll({ raw: true });
+    const eReg: IEReg[] = await db.EntidadesRegistro.findAll({ raw: true });
+    const result = fReg?.map((fnReg: { userId: number, erId: number }) => {
+      let user: IUser | undefined = users?.find((item: { id: number }) => item?.id === fnReg?.userId);
+      let eRegistro: IEReg | undefined = eReg?.find((eRegs: { id: number }) => eRegs?.id === fnReg?.erId);
+      if (fReg) {
+        return { ...fnReg, fEmail: user?.email, eReg: eRegistro?.name };
+      } else {
+        return { ...fnReg };
+      }
     });
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
