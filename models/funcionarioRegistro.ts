@@ -5,8 +5,6 @@ interface FuncionarioRegistroAttributes {
   name: string;
   phone: string;
   enabled: boolean;
-  erId: number;
-  userId: number;
 }
 
 import { Model } from "sequelize";
@@ -20,8 +18,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
     name!: string;
     phone!: string;
     enabled!: boolean;
-    erId!: number;
-    userId!: number;
+    //erId!: number;
+    //userId!: number;
 
     static associate(models: any) {
       // define association here
@@ -52,14 +50,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
         allowNull: false,
         references: {
           model: "EntidadesRegistros",
-          key: "id",
-        },
-      },
-      userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Users",
           key: "id",
         },
       },

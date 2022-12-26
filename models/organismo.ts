@@ -4,7 +4,6 @@ interface OrganismoAttributes {
   id: number;
   name: string;
   enabled: boolean;
-  municipioId: number;
 }
 
 import { Model } from "sequelize";
@@ -17,7 +16,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
     id!: number;
     name!: string;
     enabled!: boolean;
-    municipioId!: number;
 
     static associate(models: any) {
       // define association here
@@ -40,17 +38,10 @@ module.exports = (sequelize: any, DataTypes: any) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
-      municipioId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Municipios",
-          key: "id",
-        },
-      },
     },
 
     {
+      timestamps: false,
       sequelize,
       modelName: "Organismos",
     }

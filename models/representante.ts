@@ -10,8 +10,6 @@ interface RepresentanteAttributes {
   namer: string;
   namerCharge: string;
   enabled: boolean;
-  eiId: number;
-  userId: number;
 }
 
 import { Model } from "sequelize";
@@ -30,8 +28,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
     namer!: string;
     namerCharge!: string;
     enabled!: boolean;
-    eiId!: number;
-    userId!: number;
+    //eiId!: number;
+    //userId!: number;
 
     static associate(models: any) {
       // define association here
@@ -80,24 +78,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
-      eiId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "EmpresasInstituciones",
-          key: "id",
-        },
-      },
-      userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Users",
-          key: "id",
-        },
-      },
     },
     {
+      timestamps: false,
       sequelize,
       modelName: "Representantes",
     }

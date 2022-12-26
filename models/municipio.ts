@@ -4,7 +4,6 @@ interface MunicipioAttributes {
   id: number;
   name: string;
   enabled: boolean;
-  provinciaId: number;
 }
 
 import { Model } from "sequelize";
@@ -17,7 +16,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
     id!: number;
     name!: string;
     enabled!: boolean;
-    provinciaId!: number;
 
     static associate(models: any) {
        this.belongsTo(models.Provincias);
@@ -40,13 +38,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
       enabled: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-      },
-      provinciaId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Provincias",
-          key: "id",
-        },
       },
     },
     {

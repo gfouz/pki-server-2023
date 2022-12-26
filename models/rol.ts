@@ -15,7 +15,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
     enabled!: boolean;
 
     static associate(models: any) {
-      // define association here
+      this.hasMany(models.Funcionalidades);
+      this.hasOne(models.Users)
     }
   }
   Rol.init(

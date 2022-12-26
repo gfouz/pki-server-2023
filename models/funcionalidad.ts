@@ -7,7 +7,6 @@ interface FuncionalidadAttributes {
   name: string;
   path: string;
   enabled: boolean;
-  rolId: number;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
@@ -19,10 +18,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
     name!: string;
     path!: string;
     enabled!: boolean;
-    rolId!: number;
 
     static associate(models: any) {
-      // define association here
+      this.belongsTo(models.Rols);
     }
   }
   Funcionalidad.init(
@@ -47,16 +45,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
-      rolId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Rols",
-          key: "id",
-        },
-      },
     },
     {
+      timestamps: false,
       sequelize,
       modelName: "Funcionalidades",
     }

@@ -6,7 +6,6 @@ interface UserAttributes {
   email: string;
   password: string;
   enabled: boolean;
-  rolId: number;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
@@ -16,10 +15,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
     email!: string;
     password!: string;
     enabled!: boolean;
-    rolId!: number;
 
     static associate(models: any) {
-      // define association here
+       this.belongsTo(models.Rols);
     }
   }
   User.init(
@@ -46,14 +44,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
       enabled: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-      },
-      rolId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Rols",
-          key: "id",
-        },
       },
     },
     {
