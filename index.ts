@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(indexRoutes);
 
 //Todo: Generate Seeders (Must be enabled when all tables have been created)
-generateSeeders();
+//generateSeeders();
 
 db.sequelize.sync().then(() => {
   app.listen(port, () => {

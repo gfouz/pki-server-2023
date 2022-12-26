@@ -7,7 +7,7 @@ import { propositos } from "../seeders/propositos";
 import { provincias } from "../seeders/provincias";
 import { rols } from "../seeders/rols";
 import { rolsfuncionalidades } from "../seeders/rolsfuncionalidades";
-import { v4 as uuidv4 } from "uuid";
+//import { v4 as uuidv4 } from "uuid";
 import { organismos } from "../seeders/organismos";
 import { entidadesRegistro } from "../seeders/entidadesRegistro";
 import { finalidades } from "../seeders/finalidades";
@@ -22,17 +22,17 @@ export const generateSeeders = () => {
   createPropositos();
   createProvincias();
   createMunicipios();
-  createOrganismos();
-  createEmpresasInstituciones();
+  //createOrganismos();
+  //createEmpresasInstituciones();
   createEstados();
   createRols();
   createFuncionalidades();
   createUsers();
-  createEntidadesRegistro();
+  //createEntidadesRegistro();
   createFinalidades();
   createTarifas();
-  createFuncionariosRegistro();
-  createRepresentantes();
+  //createFuncionariosRegistro();
+  //createRepresentantes();
 };
 
 const createPropositos = async () => {
@@ -46,19 +46,19 @@ const createPropositos = async () => {
 
 const createProvincias = async () => {
   const { count } = await db.Provincias.findAndCountAll();
-  if (count == 0) {
-    provincias.map(async (provincia: object) => {
-      await db.Provincias.create(provincia);
-    });
-  }
+  if (count == 0) await db.Provincias.bulkCreate(provincias);
+  
 };
 
 const createMunicipios = async () => {
   const { count } = await db.Municipios.findAndCountAll();
   if (count == 0) {
-    municipios.map((municipio: object) => {
-      db.Municipios.create(municipio);
-    });
+     db.Municipios.bulkCreate(municipios).then(() => {
+        console.log('notes created');
+    }).catch((err: any) => {
+        console.log('failed to create notes');
+        console.log(err);
+    })
   }
 };
 

@@ -18,7 +18,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     enabled!: boolean;
 
     static associate(models: any) {
-      this.hasMany(models.Municipios);
+      this.hasMany(models.Municipios, {foreignKey: 'provinciaId'});
     }
   }
   Provincia.init(
@@ -41,6 +41,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
       },
     },
     {
+      timestamps: false,
       sequelize,
       modelName: "Provincias",
     }

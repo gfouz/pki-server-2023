@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { NextFunction, Request, Response } from "express";
 import db from "../models";
 import { Op } from "sequelize";
@@ -23,10 +24,14 @@ export const getProvinciasEnabled = async (
 ) => {
   try {
     const result: QueryResult = await db.Provincias.findAll({
+      raw: true,
+      include: [{model: db.Municipios}],
       where: {
         enabled: req.params.enabled,
       },
     });
+    
+    console.log(JSON.stringify(result, null, 2));
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);
@@ -35,7 +40,7 @@ export const getProvinciasEnabled = async (
 
 export const getProvinciasByName = async (
   req: Request,
-  res: Response,
+  res: Response, 
   next: NextFunction
 ) => {
   try {

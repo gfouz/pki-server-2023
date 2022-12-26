@@ -43,7 +43,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
       },
       provinciaId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         references: {
           model: "Provincias",
           key: "id",
@@ -51,6 +50,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
       },
     },
     {
+      timestamps: false,
       sequelize,
       modelName: "Municipios",
     }
