@@ -10,11 +10,6 @@ interface SolicitudAttributes {
   email: string;
   phone: string;
   charge: string;
-  tarifaId: number;
-  propositoId: number;
-  estadoId: number;
-  eiId: number;
-  erId: number;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
@@ -30,14 +25,14 @@ module.exports = (sequelize: any, DataTypes: any) => {
     email!: string;
     phone!: string;
     charge!: string;
-    tarifaId!: number;
-    propositoId!: number;
-    estadoId!: number;
-    eiId!: number;
-    erId!: number;
+    //tarifaId!: number;
+    //propositoId!: number;
+    //estadoId!: number;
+    //eiId!: number;
+    //erId!: number;
 
     static associate(models: any) {
-      // define association here
+      this.belongsTo(models.Representantes);
     }
   }
   Solicitud.init(
@@ -76,47 +71,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      tarifaId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Tarifas",
-          key: "id",
-        },
-      },
-      propositoId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Propositos",
-          key: "id",
-        },
-      },
-      estadoId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Estados",
-          key: "id",
-        },
-      },
-      eiId: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: "EmpresasInstituciones",
-          key: "id",
-        },
-      },
-      erId: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: "EntidadesRegistros",
-          key: "id",
-        },
-      },
     },
+
     {
       sequelize,
       modelName: "Solicitudes",

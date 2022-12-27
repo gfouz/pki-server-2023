@@ -5,7 +5,6 @@ interface EntidadRegistroAttributes {
   name: string;
   address: string;
   enabled: boolean;
-  municipioId: number;
 }
 
 import { Model } from "sequelize";
@@ -19,10 +18,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
     name!: string;
     address!: string;
     enabled!: boolean;
-    municipioId!: number;
+    //municipioId!: number;
 
     static associate(models: any) {
-      // define association here
+      this.hasOne(models.FuncionariosRegistro);
+      this.belongsTo(models.Municipios);
     }
   }
   
@@ -47,16 +47,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
-      municipioId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Municipios",
-          key: "id",
-        },
-      },
     },
     {
+      timestamps: false,
       sequelize,
       modelName: "EntidadesRegistro",
     }

@@ -19,7 +19,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
 
     static associate(models: any) {
        this.belongsTo(models.Provincias);
-      
+       this.hasMany(models.EntidadesRegistro);
+       this.hasMany(models.EmpresasInstituciones);
     }
   }
   Municipio.init(

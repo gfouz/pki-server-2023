@@ -20,7 +20,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
     //municipioId!: number;
 
     static associate(models: any) {
-      // define association here
+       this.hasOne(models.Representantes);
+       this.belongsTo(models.Municipios);
+       this.belongsTo(models.Organismos);
     }
   }
   EmpresaInstitucion.init(

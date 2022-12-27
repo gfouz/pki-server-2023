@@ -22,7 +22,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
     //userId!: number;
 
     static associate(models: any) {
-      // define association here
+      this.belongsTo(models.Users);
+      this.belongsTo(models.EntidadesRegistro);
     }
   }
   FuncionarioRegistro.init(
@@ -45,16 +46,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
-      erId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "EntidadesRegistros",
-          key: "id",
-        },
-      },
     },
     {
+      timestamps: false,
       sequelize,
       modelName: "FuncionariosRegistro",
     }

@@ -18,6 +18,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
 
     static associate(models: any) {
        this.belongsTo(models.Rols);
+       this.hasOne(models.FuncionariosRegistro);
+       this.hasOne(models.Representantes);
     }
   }
   User.init(

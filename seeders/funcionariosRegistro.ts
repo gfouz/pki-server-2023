@@ -8,16 +8,9 @@ export const funcionariosRegistro = [
   },
   {
     name: "laura Leticia",
-    phone: 54278815,
+    phone: 52427208,
     enabled: true,
     erId: 1,
     userId: 2,
-  },
-  {
-    name: "Sania Ricardo",
-    phone: 54278815,
-    enabled: true,
-    erId: 1,
-    userId: 3,
   },
 ];
