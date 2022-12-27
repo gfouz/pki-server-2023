@@ -43,6 +43,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
       },
     },
     {
+      timestamps: true,
       sequelize,
       modelName: "EmpresasInstituciones",
     }

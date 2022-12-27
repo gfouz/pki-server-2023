@@ -8,19 +8,7 @@ export const representantes = [
   namer: "Pepin",
   namerCharge: "presidente",
   enabled: true,
-  eiId: 2,
-  userId: 1
+  EmpresasInstitucioneId: 1,
+  UserId: 1
 },
-{
-  ci: 75062415875,
-  tome: 3333,
-  folio: 4444,
-  name: "Sania Leticia",
-  phone: "53453212",
-  namer: "Pepin",
-  namerCharge: "Ama de casa",
-  enabled: true,
-  eiId: 1,
-  userId: 2
- },
 ];

@@ -71,8 +71,7 @@ export const createOrganismo = async (
 
   try {
     const name: string = req.body.name;
-    const municipioId: number = parseInt(req.body.municipioId) ;
-    await db.Organismos.create({ name: name.trim(), enabled: true, municipioId: municipioId });
+    await db.Organismos.create({ name: name.trim(), enabled: true });
     return res.status(200).json({ message: "created" });
   } catch (ex) {
     next(ex);
@@ -91,9 +90,8 @@ export const updateOrganismo = async (
     const id: number = parseInt(req.params.id);
     const name: string = req.body.name;
     const enabled: boolean = req.body.enabled;
-    const municipioId: number = parseInt(req.body.municipioId) ;
     await db.Organismos.update(
-      { name: name.trim(), enabled: enabled, municipioId: municipioId },
+      { name: name.trim(), enabled: enabled },
       {
         where: {
           id: id,

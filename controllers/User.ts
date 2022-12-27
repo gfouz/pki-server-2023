@@ -22,26 +22,10 @@ const counter = () => {
 
 export const getUsers = async (req: Request, res: Response, next: any) => {
   try {
-    const users: IUser[] = await db.Users.findAll({
-      raw: true,
-      attributes: ["id", "name", "email", "enabled", "rolId"],
+    const result: QueryResult = await db.Users.findAll({
+      include:[{ model: db.Rols, include:[db.Funcionalidades]}],
     });
-    const fns: IFn[] = await db.Funcionalidades.findAll({ raw: true });
-    const rols: IRol[] = await db.Rols.findAll({ raw: true });
-
-    const result = users?.map((user: { rolId: number }) => {
-      let rol: IRol | undefined = rols?.find(
-        (rol: { id: number }) => rol?.id === user?.rolId
-      );
-      let functs: IFn[] = fns?.filter(
-        (fn: { rolId: number }) => fn?.rolId === user?.rolId
-      );
-      if (users) {
-        return { ...user, rol: rol?.name, funct: functs };
-      } else {
-        return { ...user };
-      }
-    });
+    
     return res.status(200).json({ result, message: "all-items" });
   } catch (ex) {
     next(ex);
@@ -52,29 +36,14 @@ export const getUsersByRol = async (req: Request, res: Response, next: any) => {
   try {
     const { id } = req.params;
 
-    const users: IUser[] = await db.Users.findAll({
-      raw: true,
-      attributes: ["id", "name", "email", "enabled", "rolId"],
+    const result: QueryResult = await db.Users.findAll({
+      
       where: {
-        rolId: parseInt(id),
+        RolId: parseInt(id),
       },
     });
-    const fns: IFn[] = await db.Funcionalidades.findAll();
-    const rols: IRol[] = await db.Rols.findAll();
 
-    const result = users?.map((user: { rolId: number }) => {
-      let rol: IRol | undefined = rols?.find(
-        (rol: { id: number }) => rol?.id === user?.rolId
-      );
-      let functs: IFn[] = fns?.filter(
-        (fn: { rolId: number }) => fn?.rolId === user?.rolId
-      );
-      if (users) {
-        return { ...user, rol: rol?.name, funct: functs };
-      } else {
-        return { ...user };
-      }
-    });
+   
     return res.status(200).json({ result, message: "gotten-by-another" });
   } catch (error) {}
 };
@@ -85,29 +54,15 @@ export const getUsersEnabled = async (
   next: NextFunction
 ) => {
   try {
-    const users: IUser[] = await db.Users.findAll({
-      raw: true,
-      attributes: ["id", "name", "email", "enabled", "rolId"],
+    const result: QueryResult = await db.Users.findAll({
+      include: [ {model: db.Rols, include:[db.Funcionalidades]} ],
       where: {
         enabled: req.params.enabled,
       },
     });
-    const fns: IFn[] = await db.Funcionalidades.findAll({ raw: true });
-    const rols: IRol[] = await db.Rols.findAll({ raw: true });
-
-    const result = users?.map((user: { rolId: number }) => {
-      let rol: IRol | undefined = rols?.find(
-        (rol: { id: number }) => rol?.id === user?.rolId
-      );
-      let functs: IFn[] = fns?.filter(
-        (fn: { rolId: number }) => fn?.rolId === user?.rolId
-      );
-      if (users) {
-        return { ...user, rol: rol?.name, funct: functs };
-      } else {
-        return { ...user };
-      }
-    });
+    /*const resp = JSON.stringify(result, null, 2);
+    const more = JSON.parse(resp);
+    console.log(more);*/
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);
@@ -122,7 +77,6 @@ export const getUsersByEmail = async (
   try {
     const email: string = req.params.email;
     const result: QueryResult = await db.Users.findAll({
-      attributes: ["id", "email", "enabled", "rolId"],
       where: {
         email: { [Op.iLike]: `%${email.trim()}%` },
       },
@@ -158,7 +112,7 @@ export const createUser = async (req: Request, res: Response, next: any) => {
       email: email.trim(),
       password: hashedPassword,
       enabled: true,
-      rolId: rolId,
+      RolId: rolId,
     });
     return res.status(200).json({ message: "created" });
   } catch (ex) {
@@ -180,7 +134,7 @@ export const updateUser = async (req: Request, res: Response, next: any) => {
         email: email.trim(),
         password: hashedPassword,
         enabled: enabled,
-        rolId: rolId,
+        RolId: rolId,
       },
       {
         where: {

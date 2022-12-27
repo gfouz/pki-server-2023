@@ -5,17 +5,15 @@ import { Model } from "sequelize";
 interface EstadoAttributes {
   id: number;
   name: string;
-  enabled: boolean;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
   class Estado extends Model<EstadoAttributes> implements EstadoAttributes {
     id!: number;
     name!: string;
-    enabled!: boolean;
 
     static associate(models: any) {
-      // define association here
+      this.belongsTo(models.Solicitudes);
     }
   }
   Estado.init(
@@ -32,12 +30,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
         allowNull: false,
         unique: true,
       },
-      enabled: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-      },
-    },
     {
+      timestamps: false,
       sequelize,
       modelName: "Estados",
     }

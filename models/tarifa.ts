@@ -7,7 +7,6 @@ interface TarifaAttributes {
   time: number;
   price: number;
   range: string;
-  finalidadId: number;
   enabled: boolean;
 }
 
@@ -17,7 +16,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     time!: number;
     price!: number;
     range!: string;
-    finalidadId!: number;
+    //finalidadId!: number;
     enabled!: boolean;
 
     static associate(models: any) {
@@ -44,14 +43,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
       range: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
-      finalidadId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Finalidades",
-          key: "id",
-        },
       },
       enabled: {
         type: DataTypes.BOOLEAN,

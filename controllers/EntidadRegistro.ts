@@ -25,7 +25,7 @@ export const getEntidadesRegistroByMun = async (
     const municipioId = parseInt(req.params.id);
     const result: QueryResult = await db.EntidadesRegistro.findAll({
       where: {
-        municipioId: municipioId,
+        MunicipioId: municipioId,
       },
     });
     return res.status(200).json({ result, message: "gotten-by-another" });
@@ -96,7 +96,7 @@ export const createEntidadRegistro = async (
       name: name.trim(),
       address: address.trim(),
       enabled: true,
-      municipioId: municipioId,
+      MunicipioId: municipioId,
     });
     return res.status(200).json({ message: "created" });
   } catch (ex) {
@@ -120,7 +120,7 @@ export const updateEntidadRegistro = async (
         name: name.trim(),
         address: address.trim(),
         enabled: enabled,
-        municipioId: municipioId,
+        MunicipioId: municipioId,
       },
       {
         where: {

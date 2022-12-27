@@ -1,25 +1,27 @@
 "use strict";
 
-import { Model } from "sequelize";
-
-interface RolAttributes {
+interface NombradorAttributes {
   id: number;
+  ci: number;
   name: string;
-  enabled: boolean;
 }
 
+import { Model } from "sequelize";
+
 module.exports = (sequelize: any, DataTypes: any) => {
-  class Rol extends Model<RolAttributes> implements RolAttributes {
+  class Nombrador
+    extends Model<NombradorAttributes>
+    implements NombradorAttributes
+  {
     id!: number;
+    ci!: number;
     name!: string;
-    enabled!: boolean;
 
     static associate(models: any) {
-      this.hasMany(models.Funcionalidades);
-      this.hasOne(models.Users)
+      this.hasMany(models.Representantes);
     }
   }
-  Rol.init(
+  Nombrador.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -27,21 +29,21 @@ module.exports = (sequelize: any, DataTypes: any) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      name: {
-        type: DataTypes.STRING,
+      ci: {
+        type: DataTypes.BIGINT,
         allowNull: false,
         unique: true,
       },
-      enabled: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
     },
     {
       timestamps: false,
       sequelize,
-      modelName: "Rols",
+      modelName: "Nombradores",
     }
   );
-  return Rol;
+  return Representante;
 };

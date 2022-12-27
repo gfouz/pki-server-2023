@@ -29,6 +29,7 @@ export const getFuncionalidadesEnabled = async (
   try {
     const enabled = req.params.enabled;
     const result: QueryResult = await db.Funcionalidades.findAll({
+      include: [db.Rols],
       where: {
         enabled: enabled,
       },

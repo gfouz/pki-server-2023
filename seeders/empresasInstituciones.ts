@@ -2,25 +2,25 @@ export const empresasInstituciones = [
   {
     name: "Universidad de Matanzas",
     enabled: true,
-    organismoId: 2,
-    municipioId: 2,
+    OrganismoId: 1,
+    MunicipioId: 2,
   },
   {
     name: "Facultad de Medicina de Cárdenas",
     enabled: true,
-    organismoId: 1,
-    municipioId: 1,
+    OrganismoId: 2,
+    MunicipioId: 3,
   },
   {
     name: "MEDANO",
     enabled: false,
-    organismoId: 2,
-    municipioId: 1,
+    OrganismoId: 3,
+    MunicipioId: 4
   },
   {
     name: "Instituto técnologico de Holguín",
     enabled: true,
-    organismoId: 2,
-    municipioId: 2,
+    OrganismoId: 4,
+    MunicipioId: 15
   },
 ];

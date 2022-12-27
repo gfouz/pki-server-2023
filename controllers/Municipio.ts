@@ -5,7 +5,10 @@ import { QueryResult } from "pg";
 
 export const getMunicipios = async (req: Request, res: Response, next: any) => {
   try {
-    const result: QueryResult = await db.Municipios.findAll();
+    const resp: QueryResult = await db.Municipios.findAll();
+    const json = JSON.stringify(resp, null, 2);
+    const result = JSON.parse(json);
+    console.log(result);
     return res.status(200).json({ result, message: "all-items" });
   } catch (ex) {
     next(ex);
@@ -36,11 +39,15 @@ export const getMunicipiosEnabled = async (
   next: NextFunction
 ) => {
   try {
-    const result: QueryResult = await db.Municipios.findAll({
+    const resp: QueryResult = await db.Municipios.findAll({
+      include: [db.Provincias, db.EntidadesRegistro],
       where: {
         enabled: req.params.enabled,
       },
     });
+    const json = JSON.stringify(resp, null, 2);
+    const result = JSON.parse(json);
+    console.log(result)
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);

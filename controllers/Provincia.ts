@@ -23,15 +23,17 @@ export const getProvinciasEnabled = async (
   next: NextFunction
 ) => {
   try {
-    const result: QueryResult = await db.Provincias.findAll({
-      raw: true,
+    const resp: QueryResult = await db.Provincias.findAll({
+    
       include: [{model: db.Municipios}],
       where: {
         enabled: req.params.enabled,
       },
     });
     
-    console.log(JSON.stringify(result, null, 2));
+    const json = JSON.stringify(resp, null, 2);
+    const result = JSON.parse(json);
+    console.log(result)
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);

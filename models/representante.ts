@@ -28,12 +28,12 @@ module.exports = (sequelize: any, DataTypes: any) => {
     namer!: string;
     namerCharge!: string;
     enabled!: boolean;
-    //eiId!: number;
-    //userId!: number;
 
     static associate(models: any) {
       this.hasMany(models.Solicitudes);
       this.belongsTo(models.EmpresasInstituciones);
+      this.belongsTo(models.Users);
+      this.belongsTo(models.Nombradores);
     }
   }
   Representante.init(

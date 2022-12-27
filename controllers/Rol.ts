@@ -33,25 +33,13 @@ export const getRolsEnabled = async (
 ) => {
   try {
     const enabled = req.params.enabled;
-    const rols: IRol[] = await db.Rols.findAll({
-      raw: true,
+    const result: QueryResult = await db.Rols.findAll({
+      include:[db.Funcionalidades],
       where: {
         enabled: enabled,
       },
     });
-    const functionalities: IFn[] = await db.Funcionalidades.findAll({
-      raw: true,
-    });
-    const result = rols?.map((rol: { id: number }) => {
-      let fns = functionalities?.filter(
-        (fn: { rolId: number }) => fn?.rolId === rol?.id
-      );
-      if (rols) {
-        return { ...rol, funct: [...fns] };
-      } else {
-        return { ...rol };
-      }
-    });
+    console.log("jksfdjsldk")
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);

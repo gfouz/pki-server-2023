@@ -35,6 +35,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
       },
     },
     {
+      timestamps: false,
       sequelize,
       modelName: "Finalidades",
     }

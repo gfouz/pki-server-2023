@@ -33,6 +33,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 
     static associate(models: any) {
       this.belongsTo(models.Representantes);
+      this.hasOne(models.Propositos)
     }
   }
   Solicitud.init(
@@ -70,6 +71,10 @@ module.exports = (sequelize: any, DataTypes: any) => {
       charge: {
         type: DataTypes.STRING,
         allowNull: true,
+      },
+      estado: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
     },
 

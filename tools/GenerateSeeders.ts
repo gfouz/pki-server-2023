@@ -6,14 +6,14 @@ import { municipios } from "../seeders/municipios";
 import { propositos } from "../seeders/propositos";
 import { provincias } from "../seeders/provincias";
 import { rols } from "../seeders/rols";
-import { rolsfuncionalidades } from "../seeders/rolsfuncionalidades";
-//import { v4 as uuidv4 } from "uuid";
+import { users } from "../seeders/users";
 import { organismos } from "../seeders/organismos";
 import { entidadesRegistro } from "../seeders/entidadesRegistro";
 import { finalidades } from "../seeders/finalidades";
 import { tarifas } from "../seeders/tarifas";
 import { funcionariosRegistro } from "../seeders/funcionariosRegistro";
 import { representantes } from "../seeders/representantes";
+//import { rolsfuncionalidades } from "../seeders/rolsfuncionalidades";
 
 
 const brcypt = require("bcrypt");
@@ -22,15 +22,15 @@ export const generateSeeders = () => {
   createPropositos();
   createProvincias();
   createMunicipios();
-  //createOrganismos();
-  //createEmpresasInstituciones();
+  createOrganismos();
+  createEmpresasInstituciones();
   createEstados();
   createRols();
   createFuncionalidades();
   createUsers();
-  //createEntidadesRegistro();
+  createEntidadesRegistro();
   createFinalidades();
-  createTarifas();
+  //createTarifas();
   //createFuncionariosRegistro();
   //createRepresentantes();
 };
@@ -53,7 +53,7 @@ const createProvincias = async () => {
 const createMunicipios = async () => {
   const { count } = await db.Municipios.findAndCountAll();
   if (count == 0) {
-     db.Municipios.bulkCreate(municipios).then(() => {
+    await db.Municipios.bulkCreate(municipios).then(() => {
         console.log('notes created');
     }).catch((err: any) => {
         console.log('failed to create notes');
@@ -91,7 +91,6 @@ const createEstados = async () => {
 
 const createRols = async () => {
   const { count } = await db.Rols.findAndCountAll();
-  console.log(`Response: ${count}`);
   if (count == 0) {
     rols.map((rol: object) => {
       db.Rols.create(rol);
@@ -108,14 +107,14 @@ const createFuncionalidades = async () => {
   }
 };
 
-const createRolsFuncionalidades = async () => {
+/*const createRolsFuncionalidades = async () => {
   const { count } = await db.RolsFuncionalidades.findAndCountAll();
   if (count == 0) {
     rolsfuncionalidades.map((rolfuncionalidad: object) => {
       db.RolsFuncionalidades.create(rolfuncionalidad);
     });
   }
-};
+};*/
 
 const createEntidadesRegistro = async () => {
   const { count } = await db.EntidadesRegistro.findAndCountAll();
@@ -145,23 +144,10 @@ const createTarifas = async () => {
 };
 
 const createUsers = async () => {
-  const { count } = await db.Users.findAndCountAll({
-    where: {
-      rolId: 3,
-    },
-  });
+  const { count } = await db.Users.findAndCountAll();
   if (count == 0) {
-    db.Users.create({
-      name: "Gilberto Acosta",
-      email: "gilbealejandro1996@gmail.com",
-      password: await brcypt.hash("administrador96", 10),
-      enabled: true,
-      rolId: 3,
-    });
-    const user = await db.Users.findOne({
-      where: {
-        email: "gilbealejandro1996@gmail.com",
-      },
+    users.map((user: object) => {
+      db.Rols.create(user);
     });
   }
 };
@@ -187,4 +173,20 @@ const createRepresentantes = async () => {
 
 
 
-
+/*const createUsers = async () => {
+  const { count } = await db.Users.findAndCountAll({
+    where: {
+      RolId: 3,
+    },
+  });
+  if (count == 0) {
+    db.Users.create({
+      name: "Gilberto Acosta",
+      email: "gilbealejandro1996@gmail.com",
+      password: await brcypt.hash("administrador96", 10),
+      enabled: true,
+      rolId: 3,
+    });
+    
+  }
+};*/

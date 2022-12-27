@@ -63,10 +63,14 @@ export const getEmpresasInstitucionesEnabled = async (
 ) => {
   try {
     const result: QueryResult = await db.EmpresasInstituciones.findAll({
+      include: [db.Municipios, db.Organismos],
       where: {
         enabled: req.params.enabled,
       },
     });
+    const resp = JSON.stringify(result, null, 2);
+    const more = JSON.parse(resp);
+    console.log(more);
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);
@@ -117,8 +121,8 @@ export const createEmpresaInstitucion = async (
     await db.EmpresasInstituciones.create({
       name: name.trim(),
       enabled: true,
-      municipioId: municipioId,
-      organismoId: organismoId,
+      MunicipioId: municipioId,
+      OrganismoId: organismoId,
     });
     return res.status(200).json({ message: "created" });
   } catch (ex) {
@@ -141,8 +145,8 @@ export const updateEmpresaInstitucion = async (
       {
         name: name.trim(),
         enabled: enabled,
-        municipioId: municipioId,
-        organismoId: organismoId,
+        MunicipioId: municipioId,
+        OrganismoId: organismoId,
       },
       {
         where: {
