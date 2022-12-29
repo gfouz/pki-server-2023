@@ -12,15 +12,11 @@ export const getRepresentantes = async (
   next: NextFunction
 ) => {
   try {
-    const representantes: IRepresentante[] = await db.Representantes.findAll({ raw: true });
-    const users: IUser[] = await db.Users.findAll({ raw: true });
-    const empInsts: IEmpInst[] = await db.EmpresasInstituciones.findAll({ raw: true });
-    const result = representantes?.map( (rep: { userId: number; eiId: number }) => {
-          const user = users.find( user => user?.id === rep?.userId );
-          const empInst = empInsts.find( emp => emp?.id === rep?.eiId);
-          return { ...rep, email: user?.email, inst: empInst?.name };
-      }
-    );
+    const result: QueryResult = await db.Representantes.findAll(
+      { 
+        include: [db.EmpresasInstituciones], 
+      });
+    
     return res.status(200).json({ result, message: "all-items" });
   } catch (ex) {
     next(ex);
@@ -36,7 +32,7 @@ export const getRepresentantesByEmpInst = async (
     const eiId = parseInt(req.params.id);
     const result: QueryResult = await db.Representantes.findAll({
       where: {
-        eiId: eiId,
+        EmpresasInstitucioneId: eiId,
       },
     });
     return res.status(200).json({ result, message: "gotten-by-another" });
@@ -51,21 +47,13 @@ export const getRepresentantesEnabled = async (
   next: NextFunction
 ) => {
   try {
-    const representantes: IRepresentante[] = await db.Representantes.findAll({
-      raw: true,
+    const result: QueryResult = await db.Representantes.findAll({
+      include: [{model: db.EmpresasInstituciones, include:[db.Municipios]}, {model: db.Users}],
       where: {
         enabled: req.params.enabled,
       },
     });
-    const users: IUser[] = await db.Users.findAll({ raw: true });
-    const empInsts: IEmpInst[] = await db.EmpresasInstituciones.findAll({ raw: true });
-    const result = representantes?.map( (rep: { userId: number; eiId: number }) => {
-          const user = users.find( user => user?.id === rep?.userId );
-          const empInst = empInsts.find( emp => emp?.id === rep?.eiId);
-          return { ...rep, email: user?.email, inst: empInst?.name };
-      }
-    );
-  
+    console.log(JSON.stringify(result, null, 2));
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);
@@ -129,8 +117,8 @@ export const createRepresentante = async (
       namer: namer,
       namerCharge: namerCharge,
       enabled: true,
-      eiId: eiId,
-      userId: userId,
+      EmpresasInstitucioneId: eiId,
+      UserId: userId,
     });
     return res.status(200).json({ message: "created" });
   } catch (error) {
@@ -166,8 +154,8 @@ export const updateRepresentante = async (
         namer: namer.trim(),
         namerCharge: namerCharge.trim(),
         enabled: enabled,
-        eiId: eiId,
-        userId: userId,
+        EmpresasInstitucioneId: eiId,
+        UserId: userId,
       },
       {
         where: {

@@ -63,6 +63,7 @@ export const getUsersEnabled = async (
     /*const resp = JSON.stringify(result, null, 2);
     const more = JSON.parse(resp);
     console.log(more);*/
+    console.log(JSON.stringify(result, null, 2))
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);
@@ -150,13 +151,12 @@ export const updateUser = async (req: Request, res: Response, next: any) => {
 
 export const loginUser = async (req: Request, res: Response) => {
   try {
-    if (count) {
-      console.log(`this is count: ${count}`);
-    }
+
     const email: string = req.body.email;
     const password: string = req.body.password;
 
     let user = await db.Users.findOne({
+      include: [{ model:db.Rols, include:[ db.Funcionalidades ] }],
       where: {
         email: email,
       },
@@ -196,7 +196,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
       return res
         .status(202)
-        .json({ signature: token, message: "autorizado", user });
+        .json({ token: token, message: "autorizado", user });
     }
   } catch (error) {
     return res.status(400).json({ message: error });

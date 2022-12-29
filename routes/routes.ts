@@ -202,7 +202,7 @@ router.put("/organismos/:id", updateOrganismo);
 router.get("/empresas-instituciones/", getEmpresasInstituciones);
 router.get("/empresas-instituciones/:id", getEmpresaInstitucionById);
 router.get("/empresas-instituciones/name/:name", getEmpresasInstitucionesByName);
-router.get("/empresas-instituciones/municipio/:id/organismo/:id2",getEmpresasInstitucionesByMunByOrg);
+router.get("/empresas-instituciones/municipio/:id",getEmpresasInstitucionesByMunByOrg);
 router.get("/empresas-instituciones/enabled/:enabled", getEmpresasInstitucionesEnabled);
 router.post("/empresas-instituciones", createEmpresaInstitucion);
 router.put("/empresas-instituciones/:id", updateEmpresaInstitucion);

@@ -23,34 +23,15 @@ export const getEmpresasInstitucionesByMunByOrg = async (
 ) => {
   try {
     const municipioId = parseInt(req.params.id);
-    const organismoId = parseInt(req.params.id2);
-    if (municipioId == 0 && organismoId != 0) {
-      const result: QueryResult = await db.EmpresasInstituciones.findAll({
-        where: {
-          organismoId: organismoId,
-        },
-      });
-      return res.status(200).json({ result, message: "gotten-by-another" });
-    }
-    if (organismoId == 0 && municipioId != 0) {
-      const result: QueryResult = await db.EmpresasInstituciones.findAll({
-        where: {
-          municipioId: municipioId,
-        },
-      });
-      return res.status(200).json({ result, message: "gotten-by-another" });
-    }
-    if (organismoId == 0 && municipioId == 0) {
-      const result: QueryResult = await db.EmpresasInstituciones.findAll();
-      return res.status(200).json({ result, message: "gotten-by-another" });
-    }
+    if(municipioId === 0) return res.status(200).json({ message: "Debe seleccionar un municipio!" });
     const result: QueryResult = await db.EmpresasInstituciones.findAll({
+      include: [db.Organismos, db.Municipios],
       where: {
-        municipioId: municipioId,
-        organismoId: organismoId,
+        MunicipioId: municipioId,
       },
     });
-    return res.status(200).json({ result, message: "gotten-by-another" });
+  
+    return res.status(200).json({ result, message: "realizado!" });
   } catch (ex) {
     next(ex);
   }
@@ -68,9 +49,7 @@ export const getEmpresasInstitucionesEnabled = async (
         enabled: req.params.enabled,
       },
     });
-    const resp = JSON.stringify(result, null, 2);
-    const more = JSON.parse(resp);
-    console.log(more);
+    //const resp = JSON.stringify(result, null, 2);
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);
@@ -118,13 +97,18 @@ export const createEmpresaInstitucion = async (
     const name: string = req.body.name;
     const municipioId: number = parseInt(req.body.municipioId);
     const organismoId: number = parseInt(req.body.organismoId);
+    const { count } = await db.EmpresasInstituciones.findAndCountAll({ where: { name: name} });
+    if ( count < 1 ) {
     await db.EmpresasInstituciones.create({
       name: name.trim(),
       enabled: true,
       MunicipioId: municipioId,
       OrganismoId: organismoId,
     });
-    return res.status(200).json({ message: "created" });
+  }else {
+    return res.status(200).json({ message: "Esa institución ya existe!" });
+  }
+    return res.status(200).json({ message: "creado" });
   } catch (ex) {
     next(ex);
   }

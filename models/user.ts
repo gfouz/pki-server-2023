@@ -2,6 +2,7 @@
 import { Model } from "sequelize";
 interface UserAttributes {
   id: number;
+  type: string;
   name: string;
   email: string;
   password: string;
@@ -11,6 +12,7 @@ interface UserAttributes {
 module.exports = (sequelize: any, DataTypes: any) => {
   class User extends Model<UserAttributes> implements UserAttributes {
     id!: number;
+    type!: string;
     name!: string;
     email!: string;
     password!: string;
@@ -29,6 +31,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
+      },
+      type: {
+        type: DataTypes.STRING,
+        defaultValue:'usuario',
+        allowNull: true
       },
       name: {
         type: DataTypes.STRING,

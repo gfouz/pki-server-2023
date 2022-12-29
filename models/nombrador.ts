@@ -2,6 +2,7 @@
 
 interface NombradorAttributes {
   id: number;
+  type: string;
   ci: number;
   name: string;
 }
@@ -14,6 +15,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     implements NombradorAttributes
   {
     id!: number;
+    type!: string;
     ci!: number;
     name!: string;
 
@@ -28,6 +30,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'nombrador'
       },
       ci: {
         type: DataTypes.BIGINT,
@@ -45,5 +52,5 @@ module.exports = (sequelize: any, DataTypes: any) => {
       modelName: "Nombradores",
     }
   );
-  return Representante;
+  return Nombrador;
 };

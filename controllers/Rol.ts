@@ -6,20 +6,10 @@ import { IFn, IRol } from "./types";
 
 export const getRols = async (req: Request, res: Response, next: any) => {
   try {
-    const rols: IRol[] = await db.Rols.findAll({ raw: true });
-    const functionalities: IFn[] = await db.Funcionalidades.findAll({
-      raw: true,
-    });
-    const result = rols?.map((rol: { id: number }) => {
-      let fns: IFn[] = functionalities?.filter(
-        (fn: { rolId: number }) => fn?.rolId === rol?.id
-      );
-      if (rols) {
-        return { ...rol, funct: [...fns] };
-      } else {
-        return { ...rol };
-      }
-    });
+    const result: QueryResult = await db.Rols.findAll({
+     include: [db.Funcionalidades],
+   });
+    console.log(JSON.stringify(result, null, 2))
     return res.status(200).json({ result, message: "all-items" });
   } catch (ex) {
     next(ex);
@@ -39,7 +29,7 @@ export const getRolsEnabled = async (
         enabled: enabled,
       },
     });
-    console.log("jksfdjsldk")
+    console.log(JSON.stringify(result, null, 2))
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);

@@ -14,7 +14,7 @@ export const getFuncionalidades = async (
   next: NextFunction
 ) => {
   try {
-    const result: QueryResult = await db.Funcionalidades.findAll();
+    const result: QueryResult = await db.Funcionalidades.findAll({ include: [db.Rols]});
     return res.status(200).json({ result, message: "all-items" });
   } catch (ex) {
     next(ex);
@@ -34,6 +34,7 @@ export const getFuncionalidadesEnabled = async (
         enabled: enabled,
       },
     });
+    console.log(JSON.stringify(result, null, 2 ))
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);
@@ -98,7 +99,7 @@ export const updateFuncionalidad = async ( req: Request, res: Response ) => {
     const enabled: boolean = req.body.enabled;
     const rolId: number = parseInt(req.body.rolId);
     await db.Funcionalidades.update(
-      { name: name.trim(), path:path, enabled: enabled, rolId: rolId },
+      { name: name.trim(), path:path, enabled: enabled, RolId: rolId },
       {
         where: {
           id: id,
@@ -122,11 +123,11 @@ export const createFuncionalidad = async ( req: Request, res: Response) => {
       name: name.trim(),
       path: path,
       enabled: true,
-      rolId: rolId,
+      RolId: rolId,
     });
     return res.status(200).json({ message: "created" });
   } catch (error) {
-    //console.log(error);
+    console.log(error);
   }
 };
 
@@ -134,8 +135,8 @@ const createRolFuncionalidad = async (rolId: number, funcionalidad: string) => {
   const funcionalidadId: number = parseInt(funcionalidad);
   if (funcionalidadId) {
     await db.RolsFuncionalidades.create({
-      rolId: rolId,
-      funcionalidadId: funcionalidadId,
+      RolId: rolId,
+      FuncionalidadId: funcionalidadId,
     });
   }
 };

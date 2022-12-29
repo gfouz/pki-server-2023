@@ -4,6 +4,7 @@ import { Model } from "sequelize";
 
 export interface FinalidadAttributes {
   id: number;
+  type: string;
   name: string;
 }
 
@@ -13,10 +14,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
     implements FinalidadAttributes
   {
     id!: number;
+    type!: string;
     name!: string;
 
     static associate(models: any) {
-      // define association here
+      this.belongsTo(models.Tarifas);
     }
   }
   Finalidad.init(
@@ -27,6 +29,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
         primaryKey: true,
         autoIncrement: true,
         unique: true,
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'finalidad'
       },
       name: {
         type: DataTypes.STRING,

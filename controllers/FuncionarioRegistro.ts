@@ -42,23 +42,13 @@ export const getFuncionariosRegistroEnabled = async (
   next: NextFunction
 ) => {
   try {
-    const fReg: IFReg[] = await db.FuncionariosRegistro.findAll({
-      raw: true,
+    const result: QueryResult = await db.FuncionariosRegistro.findAll({
+      include: [db.Users, db.EntidadesRegistro],
       where: {
         enabled: req.params.enabled,
       },
     });
-    const users: IUser[] = await db.Users.findAll({ raw: true });
-    const eReg: IEReg[] = await db.EntidadesRegistro.findAll({ raw: true });
-    const result = fReg?.map((fnReg: { userId: number, erId: number }) => {
-      let user: IUser | undefined = users?.find((item: { id: number }) => item?.id === fnReg?.userId);
-      let eRegistro: IEReg | undefined = eReg?.find((eRegs: { id: number }) => eRegs?.id === fnReg?.erId);
-      if (fReg) {
-        return { ...fnReg, fEmail: user?.email, eReg: eRegistro?.name };
-      } else {
-        return { ...fnReg };
-      }
-    });
+    console.log(JSON.stringify(result));
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);
@@ -111,8 +101,8 @@ export const createFuncionarioRegistro = async (
       name: name.trim(),
       phone: phone.trim(),
       enabled: true,
-      erId: erId,
-      userId: userId,
+      EntidadesRegistroId: erId,
+      UserId: userId,
     });
     return res.status(200).json({ message: "created" });
   } catch (ex) {
@@ -130,15 +120,15 @@ export const updateFuncionarioRegistro = async (
     const name: string = req.body.name;
     const phone = req.body.phone;
     const enabled = req.body.enabled;
-    const erId: number = parseInt(req.body.erId);
-    const userId: string = req.body.userId;
+    const EntidadesRegistroId: number = parseInt(req.body.erId);
+    const UserId: string = req.body.userId;
     await db.FuncionariosRegistro.update(
       {
         name: name.trim(),
         phone: phone.trim(),
         enabled: enabled,
-        erId: erId,
-        userId: userId,
+        EntidadesRegistroId: EntidadesRegistroId,
+        UserId: UserId,
       },
       {
         where: {

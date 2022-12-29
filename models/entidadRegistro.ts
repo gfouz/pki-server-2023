@@ -2,6 +2,7 @@
 
 interface EntidadRegistroAttributes {
   id: number;
+  type: string;
   name: string;
   address: string;
   enabled: boolean;
@@ -15,6 +16,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     implements EntidadRegistroAttributes
   {
     id!: number;
+    type!: string;
     name!: string;
     address!: string;
     enabled!: boolean;
@@ -33,6 +35,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'entidad de registro'
       },
       name: {
         type: DataTypes.STRING,

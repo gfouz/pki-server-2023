@@ -2,6 +2,7 @@
 
 interface FuncionarioRegistroAttributes {
   id: number;
+  type: string;
   name: string;
   phone: string;
   enabled: boolean;
@@ -15,6 +16,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     implements FuncionarioRegistroAttributes
   {
     id!: number;
+    type!: string;
     name!: string;
     phone!: string;
     enabled!: boolean;
@@ -33,6 +35,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'funcionario de resgistro'
       },
       name: {
         type: DataTypes.STRING,

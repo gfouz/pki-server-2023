@@ -4,6 +4,7 @@ import { Model } from "sequelize";
 
 interface FuncionalidadAttributes {
   id: number;
+  type: string;
   name: string;
   path: string;
   enabled: boolean;
@@ -15,6 +16,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     implements FuncionalidadAttributes
   {
     id!: number;
+    type!: string;
     name!: string;
     path!: string;
     enabled!: boolean;
@@ -32,10 +34,14 @@ module.exports = (sequelize: any, DataTypes: any) => {
         autoIncrement: true,
         unique: true,
       },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'funcionalidad'
+      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
       path: {
         type: DataTypes.STRING,

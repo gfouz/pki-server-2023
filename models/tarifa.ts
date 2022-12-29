@@ -4,6 +4,7 @@ import { Model } from "sequelize";
 
 interface TarifaAttributes {
   id: number;
+  type: string;
   time: number;
   price: number;
   range: string;
@@ -13,6 +14,7 @@ interface TarifaAttributes {
 module.exports = (sequelize: any, DataTypes: any) => {
   class Tarifa extends Model<TarifaAttributes> implements TarifaAttributes {
     id!: number;
+    type!: string;
     time!: number;
     price!: number;
     range!: string;
@@ -20,7 +22,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     enabled!: boolean;
 
     static associate(models: any) {
-      // define association here
+      this.hasOne(models.Finalidades);
     }
   }
   Tarifa.init(
@@ -31,6 +33,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
         primaryKey: true,
         autoIncrement: true,
         unique: true,
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'precio'
       },
       time: {
         type: DataTypes.INTEGER,

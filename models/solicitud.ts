@@ -1,8 +1,9 @@
 "use strict";
-import { Model, UUIDV4 } from "sequelize";
+import { Model } from "sequelize";
 
 interface SolicitudAttributes {
   id: string;
+  type: string;
   ci: number;
   tome: number;
   folio: number;
@@ -10,6 +11,7 @@ interface SolicitudAttributes {
   email: string;
   phone: string;
   charge: string;
+  state: string;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
@@ -18,6 +20,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     implements SolicitudAttributes
   {
     id!: string;
+    type!: string;
     ci!: number;
     tome!: number;
     folio!: number;
@@ -25,6 +28,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     email!: string;
     phone!: string;
     charge!: string;
+    state!: string;
     //tarifaId!: number;
     //propositoId!: number;
     //estadoId!: number;
@@ -43,6 +47,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
         allowNull: false,
         primaryKey: true,
         unique: true,
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'solicitud',
       },
       ci: {
         type: DataTypes.BIGINT,
@@ -72,7 +81,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      estado: {
+      state: {
         type: DataTypes.STRING,
         allowNull: false,
       },

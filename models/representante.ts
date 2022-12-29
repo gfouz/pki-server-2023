@@ -2,6 +2,7 @@
 
 interface RepresentanteAttributes {
   id: number;
+  type: string;
   ci: number;
   tome: number;
   folio: number;
@@ -20,6 +21,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     implements RepresentanteAttributes
   {
     id!: number;
+    type!: string;
     ci!: number;
     tome!: number;
     folio!: number;
@@ -43,6 +45,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'representante'
       },
       ci: {
         type: DataTypes.BIGINT,

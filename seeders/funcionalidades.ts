@@ -32,7 +32,7 @@ export const funcionalidades = [
   },
   {
     name: "Administrar usuarios",
-    path: "/usuarios",
+    path: "/users",
     enabled: true,
     RolId: 1,
   },

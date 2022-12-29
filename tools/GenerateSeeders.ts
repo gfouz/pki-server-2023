@@ -24,13 +24,13 @@ export const generateSeeders = () => {
   createMunicipios();
   createOrganismos();
   createEmpresasInstituciones();
-  createEstados();
+  //createEstados();
   createRols();
   createFuncionalidades();
   createUsers();
   createEntidadesRegistro();
   createFinalidades();
-  //createTarifas();
+  createTarifas();
   //createFuncionariosRegistro();
   //createRepresentantes();
 };

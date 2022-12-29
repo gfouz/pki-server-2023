@@ -2,6 +2,7 @@
 
 interface OrganismoAttributes {
   id: number;
+  type: string;
   name: string;
   enabled: boolean;
 }
@@ -14,6 +15,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     implements OrganismoAttributes
   {
     id!: number;
+    type!: string;
     name!: string;
     enabled!: boolean;
 
@@ -28,6 +30,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'organismo'
       },
       name: {
         type: DataTypes.STRING,

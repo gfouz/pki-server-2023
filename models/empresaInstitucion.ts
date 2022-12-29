@@ -2,6 +2,7 @@
 
 interface EmpresaInstitucionAttributes {
   id: number;
+  type: string;
   name: string;
   enabled: boolean;
 }
@@ -14,6 +15,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     implements EmpresaInstitucionAttributes
   {
     id!: number;
+    type!: string;
     name!: string;
     enabled!: boolean;
     //organismoId!: number;
@@ -32,6 +34,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'empresa o institución'
       },
       name: {
         type: DataTypes.STRING,

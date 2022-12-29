@@ -4,6 +4,7 @@ import { Model } from "sequelize";
 
 interface ProvinciaAttributes {
   id: number;
+  type: string;
   name: string;
   enabled: boolean;
 }
@@ -14,6 +15,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     implements ProvinciaAttributes
   {
     id!: number;
+    type!: string;
     name!: string;
     enabled!: boolean;
 
@@ -29,6 +31,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
         primaryKey: true,
         autoIncrement: true,
       
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'provincia',
       },
       name: {
         type: DataTypes.STRING,

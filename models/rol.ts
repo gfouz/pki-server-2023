@@ -4,6 +4,7 @@ import { Model } from "sequelize";
 
 interface RolAttributes {
   id: number;
+  type: string;
   name: string;
   enabled: boolean;
 }
@@ -11,6 +12,7 @@ interface RolAttributes {
 module.exports = (sequelize: any, DataTypes: any) => {
   class Rol extends Model<RolAttributes> implements RolAttributes {
     id!: number;
+    type!: string;
     name!: string;
     enabled!: boolean;
 
@@ -26,6 +28,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'rols'
       },
       name: {
         type: DataTypes.STRING,

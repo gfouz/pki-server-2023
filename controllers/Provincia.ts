@@ -10,7 +10,9 @@ export const getProvincias = async (
   next: NextFunction
 ) => {
   try {
-    const result: QueryResult = await db.Provincias.findAll();
+    const result: QueryResult = await db.Provincias.findAll({
+      include: [db.Municipios],
+    });
     return res.status(200).json({ result, message: "all-items" });
   } catch (ex) {
     next(ex);
@@ -23,7 +25,7 @@ export const getProvinciasEnabled = async (
   next: NextFunction
 ) => {
   try {
-    const resp: QueryResult = await db.Provincias.findAll({
+    const result: QueryResult = await db.Provincias.findAll({
     
       include: [{model: db.Municipios}],
       where: {
@@ -31,9 +33,10 @@ export const getProvinciasEnabled = async (
       },
     });
     
-    const json = JSON.stringify(resp, null, 2);
-    const result = JSON.parse(json);
-    console.log(result)
+    //const json = JSON.stringify(resp, null, 2);
+    //const result = JSON.parse(json);
+    //console.log(req.headers)
+
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);

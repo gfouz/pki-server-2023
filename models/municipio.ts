@@ -2,6 +2,7 @@
 
 interface MunicipioAttributes {
   id: number;
+  type: string;
   name: string;
   enabled: boolean;
 }
@@ -14,6 +15,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     implements MunicipioAttributes
   {
     id!: number;
+    type!: string;
     name!: string;
     enabled!: boolean;
 
@@ -30,6 +32,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'municipio',
       },
       name: {
         type: DataTypes.STRING,

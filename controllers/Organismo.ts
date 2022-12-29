@@ -21,6 +21,7 @@ export const getOrganismosEnabled = async (
     const municipioId = parseInt(req.params.id);
     const enabled = req.params.enabled;
     const result: QueryResult = await db.Organismos.findAll({
+      include: [db.EmpresasInstituciones],
       where: {
         enabled: enabled,
       },
@@ -71,10 +72,15 @@ export const createOrganismo = async (
 
   try {
     const name: string = req.body.name;
-    await db.Organismos.create({ name: name.trim(), enabled: true });
+    const { count } = await db.Organismos.findAndCountAll({ where: { name: name} });
+    if ( count < 1 ) {
+      await db.Organismos.create({ name: name.trim(), enabled: true });
+    }else {
+      return res.status(200).json({ message: "Ese Organismo ya existe!" });
+    }
     return res.status(200).json({ message: "created" });
-  } catch (ex) {
-    next(ex);
+  } catch (error) {
+     console.log(error)
   }
 };
 
