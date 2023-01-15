@@ -7,11 +7,11 @@ export const organismos = [
   },
   {
     name: "MININT",
-    enabled: true,
+    enabled: false,
   },
   {
     name: "FAR",
-    enabled: true,
+    enabled: false,
   },
   {
     name: "MINCIN",
@@ -30,11 +30,11 @@ export const organismos = [
     enabled: false,
   },
   {
-    name: "MINCONS",
-    enabled: false,
+    name: "MICONS",
+    enabled: true,
   },
   {
     name: "MINED",
-    enabled: false,
+    enabled: true,
   },
 ];

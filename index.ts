@@ -7,11 +7,11 @@ import helmet from "helmet";
 import { generateSeeders } from "./tools/GenerateSeeders";
 
 const app = express();
-app.use(helmet());
 const port = process.env.PORT;
 
 //Routes
 app.use(cors());
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -23,5 +23,5 @@ app.use(indexRoutes);
 db.sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log(`App listening on port ${port}`);
-  });
+  }); 
 });

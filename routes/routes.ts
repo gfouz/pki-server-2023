@@ -1,4 +1,18 @@
 import { Router } from "express";
+import { NextFunction, Request, Response } from "express";
+const multer = require("multer");
+//const upload = multer({ dest: "uploads/" });
+
+var storage = multer.diskStorage({
+    destination: function (req: Request, file: any, cb: any) {
+       cb(null, "public/uploads")
+    },
+    filename: function (req: Request, file: any, cb: any) {
+      cb(null, file.originalname + '.pdf')
+    }
+  })
+const upload = multer({ storage: storage });
+
 import {
   getProvincias,
   getProvinciaById,
@@ -258,8 +272,11 @@ router.get("/representantes/name/:name", getRepresentantesByName);
 router.get("/representantes/export/:ci", exportPdf);
 router.get("/representantes/empresa-institucion/:id", getRepresentantesByEmpInst);
 router.get("/representantes/enabled/:enabled", getRepresentantesEnabled);
-router.post("/representantes", createRepresentante);
-router.put("/representantes/:id", updateRepresentante);
+router.put("/representantes/:id", upload.single("file"), updateRepresentante);
+router.post("/representantes", upload.single("file"), createRepresentante );
+
+
+
 
 // Condition Routes
 router.get("/condiciones", getConditions);
@@ -290,4 +307,21 @@ router.get("/solicitudes/proposito/:id/estado/:id2/entidad-registro/:id3", getSo
 router.post("/solicitudes/generacion", generateSolicitud);
 router.get("/solicitudes/export/key/:ci", exportPrivateKey);
 
+
+
+/** Show page with a form with a specific enctype 
+router.get('/upload', (req: Request, res: Response) => {
+  res.send(`<form method="POST" action="/upload" enctype="multipart/form-data">
+  <input type="file" name="username" placeholder="username">
+  <input type="submit">
+</form>`);
+});
+ Process POST request with a multer's middleware 
+router.post('/upload', upload.any(), function (req: Request, res: Response) {
+  console.log(req.files)
+  res.send(JSON.stringify(req.body));
+});*/
+
 export default router;
+
+

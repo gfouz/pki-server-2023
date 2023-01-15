@@ -3,8 +3,9 @@ import db from "../models";
 import { Op } from "sequelize";
 import { QueryResult } from "pg";
 import fs from "fs";
-import multer from "multer";
 import { IEmpInst, IRepresentante, IUser } from "./types";
+
+
 
 export const getRepresentantes = async (
   req: Request,
@@ -48,12 +49,12 @@ export const getRepresentantesEnabled = async (
 ) => {
   try {
     const result: QueryResult = await db.Representantes.findAll({
-      include: [{model: db.EmpresasInstituciones, include:[db.Municipios]}, {model: db.Users}],
+      include: [ {model: db.EmpresasInstituciones, include:[db.Municipios]}, db.Users],
       where: {
         enabled: req.params.enabled,
       },
     });
-    console.log(JSON.stringify(result, null, 2));
+    //console.log(JSON.stringify(result, null, 2));
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);
@@ -98,6 +99,7 @@ export const createRepresentante = async (
   next: NextFunction
 ) => {
   try {
+
     const ci: number = parseInt(req.body.ci);
     const tome: number = parseInt(req.body.tome);
     const folio: number = parseInt(req.body.folio);
@@ -107,7 +109,20 @@ export const createRepresentante = async (
     const namerCharge: string = req.body.namerCharge;
     const eiId: number = parseInt(req.body.eiId);
     const userId: string = req.body.userId;
-    //deleteFile();
+
+    
+    
+  const obj = req?.file;
+
+  if(req?.file) {
+      return res.status(200).json({ message: "documento-guardado" });
+    }
+   /* if( req?.file === undefined || req?.file === null ) {
+      return res.status(200).json({ message: "Petición vacia" });
+    }*/
+    /*const { count } = await db.Representantes.findAndCountAll();
+    if( count > 0 ) return res.status(200).json({ message: "Ese nombre ya existe" });*/
+
     await db.Representantes.create({
       ci: ci,
       tome: tome,
@@ -120,9 +135,9 @@ export const createRepresentante = async (
       EmpresasInstitucioneId: eiId,
       UserId: userId,
     });
-    return res.status(200).json({ message: "created" });
-  } catch (error) {
-    console.log(error);
+    return res.status(200).json({ message: "creado" });
+  } catch (error: any) {
+      console.log(error)
   }
 };
 
@@ -131,7 +146,8 @@ export const updateRepresentante = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
+  try { 
+
     const id: number = parseInt(req.params.id);
     const ci: number = parseInt(req.body.ci);
     const tome: number = parseInt(req.body.tome);
@@ -143,16 +159,20 @@ export const updateRepresentante = async (
     const enabled = req.body.enabled;
     const eiId: number = parseInt(req.body.eiId);
     const userId: string = req.body.userId;
-    //deleteFile();
+    
+    if(req?.file) {
+      return res.status(200).json({ message: "documento-guardado" });
+    }
+    
     await db.Representantes.update(
       {
         ci: ci,
         tome: tome,
         folio: folio,
-        name: name.trim(),
-        phone: phone.trim(),
-        namer: namer.trim(),
-        namerCharge: namerCharge.trim(),
+        name: name,
+        phone: phone,
+        namer: namer,
+        namerCharge: namerCharge,
         enabled: enabled,
         EmpresasInstitucioneId: eiId,
         UserId: userId,
@@ -164,10 +184,17 @@ export const updateRepresentante = async (
       }
     );
     return res.status(200).json({ message: "updated" });
-  } catch (ex) {
-    next(ex);
+     
+
+
+  } catch (error: any) {
+      return res.status(200).json({ message: error.message });
   }
 };
+
+
+
+
 
 export const exportPdf = async (req: Request, res: Response, next: any) => {
   try {
@@ -185,3 +212,5 @@ const deleteFile = () => {
     });
   }
 };
+
+

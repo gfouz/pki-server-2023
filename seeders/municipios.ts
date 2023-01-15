@@ -41,7 +41,7 @@ export const municipios = [
   },
   {
     name: "Gibara",
-    enabled: false,
+    enabled: true,
     ProvinciaId: 9,
   },
   {
@@ -71,7 +71,7 @@ export const municipios = [
   },
   {
     name: "Holguín",
-    enabled: false,
+    enabled: true,
     ProvinciaId: 9,
   },
   {

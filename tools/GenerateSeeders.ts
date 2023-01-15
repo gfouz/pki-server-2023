@@ -21,14 +21,15 @@ const brcypt = require("bcrypt");
 export const generateSeeders = () => {
   createPropositos();
   createProvincias();
-  createMunicipios();
   createOrganismos();
-  createEmpresasInstituciones();
+  createMunicipios();
   //createEstados();
   createRols();
   createFuncionalidades();
   createUsers();
   createEntidadesRegistro();
+  createEmpresasInstituciones();
+  
   createFinalidades();
   createTarifas();
   //createFuncionariosRegistro();

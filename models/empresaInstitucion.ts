@@ -22,7 +22,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     //municipioId!: number;
 
     static associate(models: any) {
-       this.hasOne(models.Representantes);
+       this.hasMany(models.Representantes);
        this.belongsTo(models.Municipios);
        this.belongsTo(models.Organismos);
     }
@@ -50,7 +50,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
       },
     },
     {
-      timestamps: true,
+      timestamps: false,
       sequelize,
       modelName: "EmpresasInstituciones",
     }

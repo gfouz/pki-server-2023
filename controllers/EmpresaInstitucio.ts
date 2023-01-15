@@ -49,7 +49,7 @@ export const getEmpresasInstitucionesEnabled = async (
         enabled: req.params.enabled,
       },
     });
-    //const resp = JSON.stringify(result, null, 2);
+    console.log( JSON.stringify(result, null, 2) );
     return res.status(200).json({ result, message: "enabled" });
   } catch (ex) {
     next(ex);
@@ -125,9 +125,12 @@ export const updateEmpresaInstitucion = async (
     const enabled = req.body.enabled;
     const municipioId: number = parseInt(req.body.municipioId);
     const organismoId: number = parseInt(req.body.organismoId);
+
+    console.log(req.body)
+
     await db.EmpresasInstituciones.update(
       {
-        name: name.trim(),
+        name: name,
         enabled: enabled,
         MunicipioId: municipioId,
         OrganismoId: organismoId,

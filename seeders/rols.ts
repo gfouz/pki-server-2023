@@ -1,14 +1,10 @@
 export const rols = [
   {
-    name:"Cliente",
+    name:"Funcionario de la Entidad de Certificación",
     enabled: true,
   },
   {
     name:"Funcionario de la Entidad de Registro",
-    enabled: true,
-  },
-  {
-    name:"Funcionario de la Entidad de Certificación",
     enabled: true,
   },
   {
@@ -17,6 +13,10 @@ export const rols = [
   },
   {
     name:"Tutor o Nombrador",
+    enabled: true,
+  },
+  {
+    name:"Cliente",
     enabled: true,
   },
 ];
